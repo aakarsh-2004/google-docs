@@ -15,7 +15,9 @@ const TOOLBAR_OPTIONS = [
     [{ align: [] }],
     ["image", "blockquote", "code-block"],
     ["clean"],
-]
+];
+
+const SAVE_INTERVAL = 2000;
 
 const TextEditor = () => {
     const [socket, setSocket] = useState<Socket | null>(null);
@@ -26,7 +28,7 @@ const TextEditor = () => {
 
 
     useEffect(() => {
-        const socket = io("http://localhost:7890");
+        const socket = io(import.meta.env.MODE==='development' ? import.meta.env.VITE_API_URL_DEV : import.meta.env.VITE_API_URL_PROD);
         setSocket(socket);
 
         return () => {
@@ -45,6 +47,20 @@ const TextEditor = () => {
 
         socket.emit('get-document', documentId);
     }, [socket, quill, documentId]);
+
+    // saving documents
+    useEffect(() => {
+        if(!socket || !quill) return;
+
+        const interval = setInterval(() => {
+            socket.emit('save-document', quill.getContents());
+        }, SAVE_INTERVAL);
+
+        return () => {
+            clearInterval(interval);
+        }
+
+    }, [socket, quill])
 
 
     // sending the changed event
