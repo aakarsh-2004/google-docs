@@ -19,6 +19,8 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const documentModel_1 = require("./models/documentModel");
 const findOrCreate_1 = require("./actions/findOrCreate");
 const config_1 = require("./config/config");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
 const server = node_http_1.default.createServer(app);
 const PORT = config_1.config.port;

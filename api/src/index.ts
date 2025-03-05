@@ -6,7 +6,9 @@ import mongoose from 'mongoose';
 import { documentModel } from "./models/documentModel";
 import { findOrCreate } from "./actions/findOrCreate";
 import { config } from "./config/config";
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const PORT = config.port;
